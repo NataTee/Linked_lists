@@ -31,8 +31,15 @@ bool LinkedList::getNode(int id, Data *data) {
 void LinkedList::printList(bool backward) {
 
 int LinkedList::getCount() {
-    int count;
-    return count;
+  Node *current = head;
+  int count = 0;
+  if (current != NULL) {
+      count++;
+      while (current = current->next) {
+          count++;
+      }
+  }
+  return count;
 }
 
 bool LinkedList::clearList() {
@@ -57,5 +64,5 @@ void LinkedList::addTail(Node* &current, Node* &newNode, bool &added) {
 }
 
 void LinkedList::fillIt(int id, string *info, Node* &newNode) {
-    
+
 }
