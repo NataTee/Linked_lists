@@ -19,10 +19,10 @@ LinkedList::~LinkedList() {
 bool LinkedList::addNode(int id, string *info) {
     bool added = false;
     if(id > 0 && *info != ""){
-        Node *current = head;
         Node *newNode = new Node;
         fillIt(id, info, newNode);
         if (head != NULL) {
+            Node *current = head;
             while ((current->data.id < newNode->data.id) && (current->next != NULL)) {
                 current = current->next;
             }
@@ -45,11 +45,37 @@ bool LinkedList::addNode(int id, string *info) {
 }
 
 bool LinkedList::deleteNode(int id) {
+    Node *current = head;
+    bool deleted;
+    while ((current->data.id != id) && (current->next != NULL)) {
+        current = current->next;
+    }
+    if (current->data.id == id) {
+
+        deleted = true;
+    }
+    else {
+        deleted = false;
+    }
     return;
 }
 
 bool LinkedList::getNode(int id, Data *data) {
-    return;
+    bool found = false;
+    Node *current = head;
+    while ((current->data.id != id) && (current->next != NULL)) {
+        current = current->next;
+    }
+    if (current->data.id == id) {
+        data->id = current->data.id;
+        data->data = current->data.data;
+        found = true;
+    }
+    else {
+        data->id = -1;
+        data->data = "";
+    }
+    return found;
 }
 
 void LinkedList::printList(bool backward) {
