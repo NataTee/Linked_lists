@@ -41,5 +41,8 @@ File: linkedlist.h
      void addHead(Node*&, Node*&, bool&);
      void addMiddle(Node*&, Node*&, bool&);
      void addTail(Node*&, Node*&, bool&);
+     void deleteHead(Node*&, bool&);
+     void deleteMiddle(Node*&, bool&);
+     void deleteTail(Node*&, bool&);
  };
  #endif /* LINKEDLIST_H */
