@@ -26,7 +26,10 @@ bool LinkedList::addNode(int id, string *info) {
             while ((current->data.id < newNode->data.id) && (current->next != NULL)) {
                 current = current->next;
             }
-            if ((current->next == NULL) && (current->data.id < newNode->data.id)) {
+            if (current->data.id == newNode->data.id) {
+                added = false;
+            }
+            else if ((current->next == NULL) && (current->data.id < newNode->data.id)) {
                 addTail(current, newNode, added);
             }
             else if ((current->data.id > newNode->data.id) && (current->prev == NULL)){
@@ -41,7 +44,7 @@ bool LinkedList::addNode(int id, string *info) {
             added = true;
         }
     }
-  return added;
+    return added;
 }
 
 bool LinkedList::deleteNode(int id) {
@@ -102,14 +105,26 @@ bool LinkedList::exists(int id) {
 }
 
 void LinkedList::addHead(Node* &head, Node* &newNode, bool &added) {
-
+    head->prev = newNode;
+    newNode->next = head;
+    newNode->prev = NULL;
+    head = newNode;
+    added = true;
 }
 
 void LinkedList::addMiddle(Node* &current, Node* &newNode, bool &added) {
-
+    newNode->next = current;
+    newNode->prev = current->prev;
+    current->prev->next = newNode;
+    current->prev = newNode;
+    added = true;
 }
 
 void LinkedList::addTail(Node* &current, Node* &newNode, bool &added) {
+    newNode->next = NULL;
+    newNode->prev = current;
+    current->next = newNode;
+    added = true;
 
 }
 
