@@ -54,13 +54,20 @@ bool LinkedList::deleteNode(int id) {
         current = current->next;
     }
     if (current->data.id == id) {
-
-        deleted = true;
+        if (current->next == NULL) {
+            deleteTail(current, deleted);
+        }
+        else if (current->prev == NULL) {
+            deleteHead(current, deleted);
+        }
+        else {
+            deleteMiddle(current, deleted);
+        }
     }
     else {
         deleted = false;
     }
-    return;
+    return deleted;
 }
 
 bool LinkedList::getNode(int id, Data *data) {
@@ -90,7 +97,7 @@ void LinkedList::printList(bool backward) {
         while(current){
             cout << current->data.id << ": " << current->data.data << endl;
             current = current->next;
-        }   cout << endl;
+        } cout << endl;
     }
     else {
         while (current->next != NULL) {
@@ -104,15 +111,15 @@ void LinkedList::printList(bool backward) {
 }
 
 int LinkedList::getCount() {
-  Node *current = head;
-  int count = 0;
-  if (current != NULL) {
-      count++;
-      while (current = current->next) {
-          count++;
-      }
-  }
-  return count;
+    Node *current = head;
+    int count = 0;
+    if (current != NULL) {
+        count++;
+        while (current = current->next) {
+            count++;
+        }
+    }
+    return count;
 }
 
 bool LinkedList::clearList() {
@@ -133,7 +140,7 @@ bool LinkedList::exists(int id) {
     bool exist;
     Node *current = head;
     while ((current->data.id != id) && (current->next != NULL)) {
-      current = current->next;
+        current = current->next;
     }
     if (current->data.id == id) {
         exist = true;
@@ -165,11 +172,34 @@ void LinkedList::addTail(Node* &current, Node* &newNode, bool &added) {
     newNode->prev = current;
     current->next = newNode;
     added = true;
-
 }
 
 void LinkedList::fillIt(int id, string *info, Node* &newNode) {
     newNode->data.id = id;
     newNode->data.data = *info;
     newNode->next = NULL;
+}
+
+void LinkedList::deleteHead(Node* &current, bool &deleted){
+    if (current->next != NULL) {
+      head = current->next;
+      current->next->prev = NULL;
+    }
+    current->next = NULL;
+    delete current;
+    deleted = true;
+}
+
+void LinkedList::deleteMiddle(Node* &current, bool &deleted){
+    current->prev->next = current->next;
+    current->next->prev = current->prev;
+    delete current;
+    deleted = true;
+}
+
+void LinkedList::deleteTail(Node* &current, bool &deleted){
+    current->prev->next = NULL;
+    current->prev = NULL;
+    delete current;
+    deleted = true;
 }
