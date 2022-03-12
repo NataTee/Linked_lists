@@ -3,7 +3,7 @@ Name: Natalia Ksenz
 Coding 05
 Purpose: The assignment to create a fully functional doubly linked list class.
 
-File: stack.cpp
+File: linkedlist.h
 ***************************************************************************/
 
 
@@ -11,11 +11,12 @@ File: stack.cpp
  #define LINKEDLIST_H
 
  #include <iostream>     /* cout, endl */
-
+ #include "string"
  #include "data.h"
 
  using std::cout;
  using std::endl;
+ using std::string;
 
  class LinkedList {
 
@@ -35,5 +36,10 @@ File: stack.cpp
  private:
 
      Node *head;   // a pointer to the first node or NULL if the list is empty.
+
+     void fillIt(int, string*, Node*&);
+     void addHead(Node*&, Node*&, bool&);
+     void addMiddle(Node*&, Node*&, bool&);
+     void addTail(Node*&, Node*&, bool&);
  };
  #endif /* LINKEDLIST_H */
