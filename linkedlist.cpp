@@ -82,6 +82,26 @@ bool LinkedList::getNode(int id, Data *data) {
 }
 
 void LinkedList::printList(bool backward) {
+    Node *current = head;
+    if (head == NULL) {
+        cout << "\tList is empty" << endl;
+    }
+    else if (!backward) {
+        while(current){
+            cout << current->data.id << ": " << current->data.data << endl;
+            current = current->next;
+        }   cout << endl;
+    }
+    else {
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        while(current) {
+            cout << current->data.id << ": " << current->data.data << endl;
+            current = current->prev;
+        }
+    }
+}
 
 int LinkedList::getCount() {
   Node *current = head;
@@ -96,11 +116,31 @@ int LinkedList::getCount() {
 }
 
 bool LinkedList::clearList() {
+    bool deleted = false;
+    Node *current = head;
+    while (current != NULL) {
+        head = head->next;
+        delete current;
+        current = current->next;
+        deleted = true;
+    }
+    head = NULL;
+    delete head;
     return deleted;
 }
 
 bool LinkedList::exists(int id) {
     bool exist;
+    Node *current = head;
+    while ((current->data.id != id) && (current->next != NULL)) {
+      current = current->next;
+    }
+    if (current->data.id == id) {
+        exist = true;
+    }
+    else {
+        exist = false;
+    }
     return exist;
 }
 
