@@ -13,33 +13,39 @@ LinkedList::LinkedList() {
 }
 
 LinkedList::~LinkedList() {
-
+    clearList();
 }
 
 bool LinkedList::addNode(int id, string *info) {
     bool added = false;
     if(id > 0 && *info != ""){
-        Node *newNode = new Node;
-        fillIt(id, info, newNode);
         if (head != NULL) {
             Node *current = head;
-            while ((current->data.id < newNode->data.id) && (current->next != NULL)) {
+            while ((current->data.id < id) && (current->next != NULL)) {
                 current = current->next;
             }
-            if (current->data.id == newNode->data.id) {
+            if (current->data.id == id) {
                 added = false;
             }
-            else if ((current->next == NULL) && (current->data.id < newNode->data.id)) {
+            else if ((current->next == NULL) && (current->data.id < id)) {
+                Node *newNode = new Node;
+                fillIt(id, info, newNode);
                 addTail(current, newNode, added);
             }
-            else if ((current->data.id > newNode->data.id) && (current->prev == NULL)){
+            else if ((current->data.id > id) && (current->prev == NULL)) {
+                Node *newNode = new Node;
+                fillIt(id, info, newNode);
                 addHead(head, newNode, added);
             }
             else {
+                Node *newNode = new Node;
+                fillIt(id, info, newNode);
                 addMiddle(current, newNode, added);
             }
         }
         else {
+            Node *newNode = new Node;
+            fillIt(id, info, newNode);
             head = newNode;
             added = true;
         }
@@ -54,15 +60,16 @@ bool LinkedList::deleteNode(int id) {
         current = current->next;
     }
     if (current->data.id == id) {
-        if (current->next == NULL) {
-            deleteTail(current, deleted);
-        }
-        else if (current->prev == NULL) {
+        if (current->prev == NULL) {
             deleteHead(current, deleted);
+        }
+        else if (current->next == NULL) {
+            deleteTail(current, deleted);
         }
         else {
             deleteMiddle(current, deleted);
         }
+
     }
     else {
         deleted = false;
@@ -124,15 +131,17 @@ int LinkedList::getCount() {
 
 bool LinkedList::clearList() {
     bool deleted = false;
-    Node *current = head;
-    while (current != NULL) {
-        head = head->next;
-        delete current;
-        current = current->next;
-        deleted = true;
+    if (head != NULL) {
+        Node *current = head;
+        while (current != NULL) {
+            head = head->next;
+            delete current;
+            current = current->next;
+            deleted = true;
+        }
+        head = NULL;
+        delete head;
     }
-    head = NULL;
-    delete head;
     return deleted;
 }
 
@@ -178,14 +187,18 @@ void LinkedList::fillIt(int id, string *info, Node* &newNode) {
     newNode->data.id = id;
     newNode->data.data = *info;
     newNode->next = NULL;
+    newNode->prev = NULL;
 }
 
 void LinkedList::deleteHead(Node* &current, bool &deleted){
     if (current->next != NULL) {
-      head = current->next;
-      current->next->prev = NULL;
+        head = current->next;
+        current->next->prev = NULL;
+        current->next = NULL;
     }
-    current->next = NULL;
+    else {
+        head = NULL;
+    }
     delete current;
     deleted = true;
 }
