@@ -24,23 +24,18 @@ bool LinkedList::addNode(int id, string *info) {
             while ((current->data.id < id) && (current->next != NULL)) {
                 current = current->next;
             }
-            if (current->data.id == id) {
-                added = false;
-            }
-            else if ((current->next == NULL) && (current->data.id < id)) {
+            if (current->data.id != id) {
                 Node *newNode = new Node;
                 fillIt(id, info, newNode);
-                addTail(current, newNode, added);
-            }
-            else if ((current->data.id > id) && (current->prev == NULL)) {
-                Node *newNode = new Node;
-                fillIt(id, info, newNode);
-                addHead(head, newNode, added);
-            }
-            else {
-                Node *newNode = new Node;
-                fillIt(id, info, newNode);
-                addMiddle(current, newNode, added);
+                if ((current->next == NULL) && (current->data.id < id)) {
+                    addTail(current, newNode, added);
+                }
+                else if ((current->data.id > id) && (current->prev == NULL)) {
+                    addHead(head, newNode, added);
+                }
+                else {
+                    addMiddle(current, newNode, added);
+                }
             }
         }
         else {
@@ -54,22 +49,27 @@ bool LinkedList::addNode(int id, string *info) {
 }
 
 bool LinkedList::deleteNode(int id) {
-    Node *current = head;
     bool deleted;
-    while ((current->data.id != id) && (current->next != NULL)) {
-        current = current->next;
-    }
-    if (current->data.id == id) {
-        if (current->prev == NULL) {
-            deleteHead(current, deleted);
+    if (head != NULL) {
+        Node *current = head;
+        while ((current->data.id != id) && (current->next != NULL)) {
+          current = current->next;
         }
-        else if (current->next == NULL) {
-            deleteTail(current, deleted);
+        if (current->data.id == id) {
+            if (current->prev == NULL) {
+                deleteHead(current, deleted);
+            }
+            else if (current->next == NULL) {
+                deleteTail(current, deleted);
+            }
+            else {
+                deleteMiddle(current, deleted);
+            }
+
         }
         else {
-            deleteMiddle(current, deleted);
+            deleted = false;
         }
-
     }
     else {
         deleted = false;
